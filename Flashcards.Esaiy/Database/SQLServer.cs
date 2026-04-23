@@ -5,13 +5,13 @@ namespace Flashcards.Esaiy.Database;
 
 public class SQLServer(string connString)
 {
-    private readonly string connectionString = connString;
+    public string ConnectionString { get; } = connString;
 
     public void MigrateUp()
     {
         try
         {
-            using var connection = new SqlConnection(connectionString);
+            using var connection = new SqlConnection(ConnectionString);
             var stackQuery = @"
                     IF OBJECT_ID('dbo.stack', 'U') IS NULL
                     BEGIN
@@ -50,7 +50,7 @@ public class SQLServer(string connString)
     {
         try
         {
-            using var connection = new SqlConnection(connectionString);
+            using var connection = new SqlConnection(ConnectionString);
             var dropQuery = @"
                     DROP TABLE IF EXISTS flashcard;
                     DROP TABLE IF EXISTS stack;";
