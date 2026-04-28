@@ -1,10 +1,10 @@
 using Flashcards.Esaiy.Enums;
-using Flashcards.Esaiy.Model;
-using Flashcards.Esaiy.Repository;
+using Flashcards.Esaiy.Models;
+using Flashcards.Esaiy.Repositories;
 using Microsoft.Data.SqlClient;
 using Spectre.Console;
 
-namespace Flashcards.Esaiy.Controller;
+namespace Flashcards.Esaiy.Controllers;
 
 public class StackController(StackRepository stackRepo)
 {

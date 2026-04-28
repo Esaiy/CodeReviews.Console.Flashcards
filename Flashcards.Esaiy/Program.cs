@@ -1,7 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
-using Flashcards.Esaiy.Controller;
-using Flashcards.Esaiy.Database;
-using Flashcards.Esaiy.Repository;
+using Flashcards.Esaiy.Controllers;
+using Flashcards.Esaiy.Databases;
+using Flashcards.Esaiy.Repositories;
 using Spectre.Console;
 using Flashcards.Esaiy.Enums;
 

@@ -1,7 +1,7 @@
 using Dapper;
 using Microsoft.Data.SqlClient;
 
-namespace Flashcards.Esaiy.Database;
+namespace Flashcards.Esaiy.Databases;
 
 public class SQLServer(string connString)
 {

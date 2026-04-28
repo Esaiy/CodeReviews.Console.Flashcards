@@ -1,9 +1,9 @@
 using Dapper;
-using Flashcards.Esaiy.Database;
-using Flashcards.Esaiy.Model;
+using Flashcards.Esaiy.Databases;
+using Flashcards.Esaiy.Models;
 using Microsoft.Data.SqlClient;
 
-namespace Flashcards.Esaiy.Repository;
+namespace Flashcards.Esaiy.Repositories;
 
 public class StackRepository(SQLServer db)
 {

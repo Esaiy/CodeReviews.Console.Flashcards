@@ -1,9 +1,9 @@
-namespace Flashcards.Esaiy.Controller;
-
 using Flashcards.Esaiy.Enums;
-using Flashcards.Esaiy.Model;
-using Flashcards.Esaiy.Repository;
+using Flashcards.Esaiy.Models;
+using Flashcards.Esaiy.Repositories;
 using Spectre.Console;
+
+namespace Flashcards.Esaiy.Controllers;
 
 public class StudySessionController(StudySessionRepository studySessionRepo, FlashcardRepository flashcardRepo, StackRepository stackRepo)
 {

@@ -1,4 +1,4 @@
-namespace Flashcards.Esaiy.Model;
+namespace Flashcards.Esaiy.Models;
 
 public class StudySession
 {
