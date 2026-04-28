@@ -15,30 +15,30 @@ public class StackController(StackRepository stackRepo)
             AnsiConsole.Clear();
             FigletText title = new("Flashcard");
             AnsiConsole.Write(title);
-            Enums.StackMenu choice = AnsiConsole.Prompt(
-                    new SelectionPrompt<Enums.StackMenu>()
+            StackMenu choice = AnsiConsole.Prompt(
+                    new SelectionPrompt<StackMenu>()
                     .Title("Choose Stack Menu")
                     .PageSize(10)
                     .MoreChoicesText("Move Up Or Down to Choose")
-                    .AddChoices(Enum.GetValues<Enums.StackMenu>())
+                    .AddChoices(Enum.GetValues<StackMenu>())
                     );
             switch (choice)
             {
-                case Enums.StackMenu.Create:
+                case StackMenu.Create:
                     Create();
                     break;
-                case Enums.StackMenu.GetAll:
+                case StackMenu.GetAll:
                     GetAll();
                     break;
-                case Enums.StackMenu.Pick:
+                case StackMenu.Pick:
                     break;
-                case Enums.StackMenu.Update:
+                case StackMenu.Update:
                     Update();
                     break;
-                case Enums.StackMenu.Delete:
+                case StackMenu.Delete:
                     Delete();
                     break;
-                case Enums.StackMenu.Back:
+                case StackMenu.Back:
                     return;
             }
             AnsiConsole.MarkupLine("Press Any Key to Continue");
@@ -96,11 +96,6 @@ public class StackController(StackRepository stackRepo)
         }
 
         AnsiConsole.Write(readTable);
-    }
-
-    public void Pick()
-    {
-
     }
 
     public void Update()

@@ -21,6 +21,7 @@ enum StackMenu
 
 enum FlashcardMenu
 {
+    SelectStack,
     Create,
     GetAll,
     Update,

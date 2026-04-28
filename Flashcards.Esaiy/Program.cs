@@ -15,6 +15,9 @@ SQLServerObject.MigrateUp();
 var stackRepository = new StackRepository(SQLServerObject);
 var stackController = new StackController(stackRepository);
 
+var flashcardRepository = new FlashcardRepository(SQLServerObject);
+var flashcardController = new FlashcardController(flashcardRepository, stackRepository);
+
 while (true)
 {
     AnsiConsole.Clear();
@@ -36,6 +39,7 @@ while (true)
             stackController.ManageStack();
             break;
         case Main.ManageFlashcard:
+            flashcardController.ManageFlashcard();
             break;
         case Main.Study:
             break;

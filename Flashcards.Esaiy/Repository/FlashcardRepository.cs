@@ -44,7 +44,7 @@ public class FlashcardRepository(SQLServer db)
         return result;
     }
 
-    public bool Update(int id, Flashcard flashcard)
+    public bool Update(Flashcard flashcard)
     {
         var queryUpdate = @"
             UPDATE flashcard
@@ -53,7 +53,7 @@ public class FlashcardRepository(SQLServer db)
             WHERE Id = @Id;";
 
         using var connection = new SqlConnection(_db.ConnectionString);
-        var rows = connection.Execute(queryUpdate, new { flashcard.Front, flashcard.Back, Id = id });
+        var rows = connection.Execute(queryUpdate, new { flashcard.Front, flashcard.Back, flashcard.Id });
         return rows > 0;
     }
 
