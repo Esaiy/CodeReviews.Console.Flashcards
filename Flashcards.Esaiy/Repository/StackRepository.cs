@@ -43,7 +43,7 @@ public class StackRepository(SQLServer db)
         return result;
     }
 
-    public bool Update(int id, Stack stack)
+    public bool Update(Stack stack)
     {
         var queryUpdate = @"
             UPDATE stack
@@ -51,7 +51,7 @@ public class StackRepository(SQLServer db)
             WHERE Id = @Id;";
 
         using var connection = new SqlConnection(_db.ConnectionString);
-        var rows = connection.Execute(queryUpdate, new { stack.Name, Id = id });
+        var rows = connection.Execute(queryUpdate, new { stack.Name, stack.Id });
         return rows > 0;
     }
 
