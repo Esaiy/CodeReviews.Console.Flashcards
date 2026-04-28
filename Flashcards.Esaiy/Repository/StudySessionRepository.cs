@@ -1,0 +1,33 @@
+using Dapper;
+using Flashcards.Esaiy.Database;
+using Flashcards.Esaiy.Model;
+using Microsoft.Data.SqlClient;
+
+namespace Flashcards.Esaiy.Repository;
+
+public class StudySessionRepository(SQLServer db)
+{
+    private readonly SQLServer _db = db;
+
+    public void Create(StudySession studySession)
+    {
+        var query = @"
+            INSERT INTO study_session(CorrectAnswer, TotalQuestions, Date, StackId)
+            VALUES (@CorrectAnswer, @TotalQuestions, @Date, @StackId);";
+
+        using var connection = new SqlConnection(_db.ConnectionString);
+        connection.Execute(query, studySession);
+    }
+
+    public List<StudySession> GetAll(int stackId)
+    {
+        var query = @"
+            SELECT Id, CorrectAnswer, TotalQuestions, Date, StackId
+            FROM study_session
+            WHERE StackId = @Id;";
+
+        using var connection = new SqlConnection(_db.ConnectionString);
+        List<StudySession> result = [.. connection.Query<StudySession>(query, new { Id = stackId })];
+        return result;
+    }
+};

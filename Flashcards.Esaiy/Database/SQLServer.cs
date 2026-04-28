@@ -38,6 +38,23 @@ public class SQLServer(string connString)
                       );
                     END";
             connection.Execute(flashcardQuery);
+
+            var studySessionQuery = @"
+                    IF OBJECT_ID('dbo.study_session', 'U') IS NULL
+                    BEGIN
+                      CREATE TABLE study_session
+                      (
+                        Id INT IDENTITY(1,1) PRIMARY KEY,
+                        CorrectAnswer INT NOT NULL,
+                        TotalQuestions INT NOT NULL,
+                        Date DATETIME NOT NULL,
+                        StackId INT NOT NULL,
+                        CONSTRAINT FK_study_session_stack FOREIGN KEY (StackId)
+                        REFERENCES stack (Id)
+                        ON DELETE CASCADE
+                      );
+                    END";
+            connection.Execute(studySessionQuery);
         }
         catch
         {
@@ -53,7 +70,8 @@ public class SQLServer(string connString)
             using var connection = new SqlConnection(ConnectionString);
             var dropQuery = @"
                     DROP TABLE IF EXISTS flashcard;
-                    DROP TABLE IF EXISTS stack;";
+                    DROP TABLE IF EXISTS stack;
+                    DROP TABLE IF EXISTS study_session";
             connection.Execute(dropQuery);
         }
         catch
