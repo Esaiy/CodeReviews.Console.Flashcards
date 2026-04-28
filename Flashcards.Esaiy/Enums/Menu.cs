@@ -29,3 +29,10 @@ enum FlashcardMenu
     Back
 };
 
+enum StudyMenu
+{
+    SelectStack,
+    Start,
+    GetAll,
+    Back
+};

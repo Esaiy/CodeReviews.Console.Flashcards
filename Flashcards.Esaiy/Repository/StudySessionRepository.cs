@@ -9,7 +9,7 @@ public class StudySessionRepository(SQLServer db)
 {
     private readonly SQLServer _db = db;
 
-    public void Create(StudySession studySession)
+    public void Save(StudySession studySession)
     {
         var query = @"
             INSERT INTO study_session(CorrectAnswer, TotalQuestions, Date, StackId)

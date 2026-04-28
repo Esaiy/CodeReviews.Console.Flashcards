@@ -4,7 +4,6 @@ using Flashcards.Esaiy.Database;
 using Flashcards.Esaiy.Repository;
 using Spectre.Console;
 using Flashcards.Esaiy.Enums;
-using Flashcards.Esaiy.Model;
 
 Console.WriteLine("Hello, World!");
 
@@ -20,16 +19,7 @@ var flashcardRepository = new FlashcardRepository(SQLServerObject);
 var flashcardController = new FlashcardController(flashcardRepository, stackRepository);
 
 var studySessionRepository = new StudySessionRepository(SQLServerObject);
-var obj = new StudySession(1, 2, DateTime.Now, 4009);
-studySessionRepository.Create(obj);
-
-var l = studySessionRepository.GetAll(4009);
-
-foreach (var item in l)
-{
-    Console.WriteLine($"{item.Id} {item.StackId} {item.CorrectAnswer} {item.TotalQuestions} {item.Date}");
-}
-return;
+var studySessionController = new StudySessionController(studySessionRepository, flashcardRepository, stackRepository);
 
 while (true)
 {
@@ -55,6 +45,7 @@ while (true)
             flashcardController.ManageFlashcard();
             break;
         case Main.Study:
+            studySessionController.Study();
             break;
         case Main.ViewReport:
             break;
