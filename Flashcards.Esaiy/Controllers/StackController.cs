@@ -88,11 +88,10 @@ public class StackController(StackRepository stackRepo)
         }
 
         Table readTable = new();
-        readTable.AddColumn("Id")
-            .AddColumn("Name");
+        readTable.AddColumn("Name");
         foreach (var s in listStack)
         {
-            _ = readTable.AddRow(new Text(s.Id.ToString()), new Text(s.Name));
+            _ = readTable.AddRow(new Text(s.Name));
         }
 
         AnsiConsole.Write(readTable);
@@ -113,7 +112,7 @@ public class StackController(StackRepository stackRepo)
             .Title("Select Coding Session")
             .PageSize(10)
             .MoreChoicesText("Move Up Or Down to Choose")
-            .UseConverter(s => $"{s.Id} {s.Name}")
+            .UseConverter(s => $"{s.Name}")
             .AddChoices(stacks)
             );
 
@@ -140,7 +139,7 @@ public class StackController(StackRepository stackRepo)
             .Title("Select Coding Session")
             .PageSize(10)
             .MoreChoicesText("Move Up Or Down to Choose")
-            .UseConverter(s => $"{s.Id} {s.Name}")
+            .UseConverter(s => $"{s.Name}")
             .AddChoices(stacks)
             );
 

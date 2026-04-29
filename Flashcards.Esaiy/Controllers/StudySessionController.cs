@@ -1,3 +1,4 @@
+using Flashcards.Esaiy.Dtos;
 using Flashcards.Esaiy.Enums;
 using Flashcards.Esaiy.Models;
 using Flashcards.Esaiy.Repositories;
@@ -124,12 +125,14 @@ public class StudySessionController(StudySessionRepository studySessionRepo, Fla
             return;
         }
 
+        var studySessionDtos = StudySessionDTO.ModelToDTO(listStudySessions);
+
         Table readTable = new();
         readTable.AddColumn("Id")
             .AddColumn("Correct Answer")
             .AddColumn("Total Questions")
             .AddColumn("Date");
-        foreach (var l in listStudySessions)
+        foreach (var l in studySessionDtos)
         {
             _ = readTable.AddRow(new Text(l.Id.ToString()), new Text(l.CorrectAnswer.ToString()), new Text(l.TotalQuestions.ToString()), new Text(l.Date.ToString()));
         }

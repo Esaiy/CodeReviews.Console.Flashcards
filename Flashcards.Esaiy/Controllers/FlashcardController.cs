@@ -1,3 +1,4 @@
+using Flashcards.Esaiy.Dtos;
 using Flashcards.Esaiy.Enums;
 using Flashcards.Esaiy.Models;
 using Flashcards.Esaiy.Repositories;
@@ -55,6 +56,7 @@ public class FlashcardController(FlashcardRepository flashcardRepo, StackReposit
         }
     }
 
+    // TODO: maybe refactor this into stack related class
     public Stack? SelectStack()
     {
         var stacks = stackRepo.GetAll();
@@ -98,11 +100,13 @@ public class FlashcardController(FlashcardRepository flashcardRepo, StackReposit
             return;
         }
 
+        var flashcardDtos = FlashcardDto.ModelToDto(listFlashcard);
+
         Table readTable = new();
         readTable.AddColumn("Id")
             .AddColumn("Front")
             .AddColumn("Back");
-        foreach (var f in listFlashcard)
+        foreach (var f in flashcardDtos)
         {
             _ = readTable.AddRow(new Text(f.Id.ToString()), new Text(f.Front), new Text(f.Back));
         }
@@ -120,22 +124,23 @@ public class FlashcardController(FlashcardRepository flashcardRepo, StackReposit
             return;
         }
 
+        var flashcardDtos = FlashcardDto.ModelToDto(listFlashcard);
+
         var updateId = AnsiConsole.Prompt(
-            new SelectionPrompt<Flashcard>()
+            new SelectionPrompt<FlashcardDto>()
             .Title("Select Flashcard")
             .PageSize(10)
             .MoreChoicesText("Move Up Or Down to Choose")
             .UseConverter(s => $"{s.Id} {s.Front} {s.Back}")
-            .AddChoices(listFlashcard)
+            .AddChoices(flashcardDtos)
             );
 
         var newFront = AnsiConsole.Ask<string>("Enter new front side");
         var newBack = AnsiConsole.Ask<string>("Enter new back side");
 
-        updateId.Front = newFront;
-        updateId.Back = newBack;
+        var newFlashcard = new Flashcard(updateId.RealId, newFront, newBack, stack.Id);
 
-        flashcardRepo.Update(updateId);
+        flashcardRepo.Update(newFlashcard);
 
         AnsiConsole.MarkupLine("Flashcard has been updated.");
     }
@@ -150,16 +155,18 @@ public class FlashcardController(FlashcardRepository flashcardRepo, StackReposit
             return;
         }
 
+        var flashcardDtos = FlashcardDto.ModelToDto(listFlashcard);
+
         var deletedFlashcard = AnsiConsole.Prompt(
-            new SelectionPrompt<Flashcard>()
+            new SelectionPrompt<FlashcardDto>()
             .Title("Select Flashcard")
             .PageSize(10)
             .MoreChoicesText("Move Up Or Down to Choose")
             .UseConverter(s => $"{s.Id} {s.Front} {s.Back}")
-            .AddChoices(listFlashcard)
+            .AddChoices(flashcardDtos)
             );
 
-        flashcardRepo.Delete(deletedFlashcard.Id);
+        flashcardRepo.Delete(deletedFlashcard.RealId);
 
         AnsiConsole.MarkupLine("Flashcard has been deleted");
     }
