@@ -3,7 +3,7 @@ using Microsoft.Data.SqlClient;
 
 namespace Flashcards.Esaiy.Databases;
 
-public class SQLServer(string connString)
+public class SqlServer(string connString)
 {
     public string ConnectionString { get; } = connString;
 

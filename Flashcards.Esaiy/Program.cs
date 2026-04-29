@@ -9,7 +9,7 @@ Console.WriteLine("Hello, World!");
 
 var connectionString = "Server=localhost;Database=flashcard;User Id=sa;Password=P@ssword123;TrustServerCertificate=True";
 
-var SQLServerObject = new SQLServer(connectionString);
+var SQLServerObject = new SqlServer(connectionString);
 SQLServerObject.MigrateUp();
 
 var stackRepository = new StackRepository(SQLServerObject);

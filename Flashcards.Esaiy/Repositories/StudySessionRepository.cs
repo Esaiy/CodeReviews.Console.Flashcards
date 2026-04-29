@@ -5,9 +5,9 @@ using Microsoft.Data.SqlClient;
 
 namespace Flashcards.Esaiy.Repositories;
 
-public class StudySessionRepository(SQLServer db)
+public class StudySessionRepository(SqlServer db)
 {
-    private readonly SQLServer _db = db;
+    private readonly SqlServer _db = db;
 
     public void Save(StudySession studySession)
     {

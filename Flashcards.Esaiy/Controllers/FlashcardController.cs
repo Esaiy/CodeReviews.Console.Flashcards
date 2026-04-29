@@ -92,15 +92,15 @@ public class FlashcardController(FlashcardRepository flashcardRepo, StackReposit
 
     public void GetAll(Stack stack)
     {
-        var listFlashcard = flashcardRepo.GetAll(stack.Id);
+        var flashcards = flashcardRepo.GetAll(stack.Id);
 
-        if (listFlashcard.Count == 0)
+        if (flashcards.Count == 0)
         {
             AnsiConsole.MarkupLine("There is no flashcard in this stack.");
             return;
         }
 
-        var flashcardDtos = FlashcardDto.ModelToDto(listFlashcard);
+        var flashcardDtos = FlashcardDto.ModelToDto(flashcards);
 
         Table readTable = new();
         readTable.AddColumn("Id")
@@ -116,15 +116,15 @@ public class FlashcardController(FlashcardRepository flashcardRepo, StackReposit
 
     public void Update(Stack stack)
     {
-        var listFlashcard = flashcardRepo.GetAll(stack.Id);
+        var flashcards = flashcardRepo.GetAll(stack.Id);
 
-        if (listFlashcard.Count == 0)
+        if (flashcards.Count == 0)
         {
             AnsiConsole.MarkupLine("There is no flashcard in this stack.");
             return;
         }
 
-        var flashcardDtos = FlashcardDto.ModelToDto(listFlashcard);
+        var flashcardDtos = FlashcardDto.ModelToDto(flashcards);
 
         var updateId = AnsiConsole.Prompt(
             new SelectionPrompt<FlashcardDto>()
@@ -147,15 +147,15 @@ public class FlashcardController(FlashcardRepository flashcardRepo, StackReposit
 
     public void Delete(Stack stack)
     {
-        var listFlashcard = flashcardRepo.GetAll(stack.Id);
+        var flashcards = flashcardRepo.GetAll(stack.Id);
 
-        if (listFlashcard.Count == 0)
+        if (flashcards.Count == 0)
         {
             AnsiConsole.MarkupLine("There is no flashcard in this stack.");
             return;
         }
 
-        var flashcardDtos = FlashcardDto.ModelToDto(listFlashcard);
+        var flashcardDtos = FlashcardDto.ModelToDto(flashcards);
 
         var deletedFlashcard = AnsiConsole.Prompt(
             new SelectionPrompt<FlashcardDto>()

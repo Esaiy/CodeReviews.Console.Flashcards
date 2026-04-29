@@ -5,9 +5,9 @@ using Microsoft.Data.SqlClient;
 
 namespace Flashcards.Esaiy.Repositories;
 
-public class StackRepository(SQLServer db)
+public class StackRepository(SqlServer db)
 {
-    private readonly SQLServer _db = db;
+    private readonly SqlServer _db = db;
 
     public void Create(Stack stack)
     {

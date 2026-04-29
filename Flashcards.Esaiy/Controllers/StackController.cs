@@ -79,9 +79,9 @@ public class StackController(StackRepository stackRepo)
 
     public void GetAll()
     {
-        var listStack = stackRepo.GetAll();
+        var stacks = stackRepo.GetAll();
 
-        if (listStack.Count == 0)
+        if (stacks.Count == 0)
         {
             AnsiConsole.MarkupLine("There is no stack.");
             return;
@@ -89,7 +89,7 @@ public class StackController(StackRepository stackRepo)
 
         Table readTable = new();
         readTable.AddColumn("Name");
-        foreach (var s in listStack)
+        foreach (var s in stacks)
         {
             _ = readTable.AddRow(new Text(s.Name));
         }

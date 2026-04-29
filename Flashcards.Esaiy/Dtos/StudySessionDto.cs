@@ -2,20 +2,20 @@ using Flashcards.Esaiy.Models;
 
 namespace Flashcards.Esaiy.Dtos;
 
-public class StudySessionDTO
+public class StudySessionDto
 {
     public int Id { get; set; }
     public int CorrectAnswer { get; set; }
     public int TotalQuestions { get; set; }
     public DateTime Date { get; set; }
 
-    public static List<StudySessionDTO> ModelToDTO(List<StudySession> studySessionModels)
+    public static List<StudySessionDto> ModelToDTO(List<StudySession> studySessionModels)
     {
-        List<StudySessionDTO> dtos = [];
+        List<StudySessionDto> dtos = [];
         var i = 1;
         foreach (var s in studySessionModels)
         {
-            dtos.Add(new StudySessionDTO
+            dtos.Add(new StudySessionDto
             {
                 Id = i++,
                 CorrectAnswer = s.CorrectAnswer,

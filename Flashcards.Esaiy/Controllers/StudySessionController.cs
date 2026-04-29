@@ -117,15 +117,15 @@ public class StudySessionController(StudySessionRepository studySessionRepo, Fla
 
     public void GetAll(Stack stack)
     {
-        var listStudySessions = studySessionRepo.GetAll(stack.Id);
+        var studySessions = studySessionRepo.GetAll(stack.Id);
 
-        if (listStudySessions.Count == 0)
+        if (studySessions.Count == 0)
         {
             AnsiConsole.MarkupLine("There is no flashcard in this stack.");
             return;
         }
 
-        var studySessionDtos = StudySessionDTO.ModelToDTO(listStudySessions);
+        var studySessionDtos = StudySessionDto.ModelToDTO(studySessions);
 
         Table readTable = new();
         readTable.AddColumn("Id")
