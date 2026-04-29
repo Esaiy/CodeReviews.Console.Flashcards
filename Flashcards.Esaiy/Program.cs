@@ -21,6 +21,9 @@ var flashcardController = new FlashcardController(flashcardRepository, stackRepo
 var studySessionRepository = new StudySessionRepository(SQLServerObject);
 var studySessionController = new StudySessionController(studySessionRepository, flashcardRepository, stackRepository);
 
+var reportRepository = new ReportRepository(SQLServerObject);
+var reportController = new ReportController(reportRepository, stackRepository);
+
 while (true)
 {
     AnsiConsole.Clear();
@@ -48,6 +51,7 @@ while (true)
             studySessionController.Study();
             break;
         case Main.ViewReport:
+            reportController.GetReport();
             break;
         case Main.Exit:
             AnsiConsole.WriteLine("Exiting Program");
