@@ -8,6 +8,7 @@ public class StudySessionDto
     public int CorrectAnswer { get; set; }
     public int TotalQuestions { get; set; }
     public DateTime Date { get; set; }
+    public double Score => (double)CorrectAnswer / TotalQuestions * 100;
 
     public static List<StudySessionDto> ModelToDTO(List<StudySession> studySessionModels)
     {

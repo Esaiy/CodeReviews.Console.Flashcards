@@ -112,7 +112,8 @@ public class StudySessionController(StudySessionRepository studySessionRepo, Fla
         var obj = new StudySession(correctAnswer, flashcards.Count, startTime, stack.Id);
         studySessionRepo.Save(obj);
 
-        AnsiConsole.MarkupLine($"finished a session with a score: {correctAnswer}/{flashcards.Count}");
+        var score = (double)correctAnswer / flashcards.Count * 100;
+        AnsiConsole.MarkupLine($"finished a session with a score: {score} ({correctAnswer}/{flashcards.Count})");
     }
 
     public void GetAll(Stack stack)
@@ -131,10 +132,11 @@ public class StudySessionController(StudySessionRepository studySessionRepo, Fla
         readTable.AddColumn("Id")
             .AddColumn("Correct Answer")
             .AddColumn("Total Questions")
+            .AddColumn("Score")
             .AddColumn("Date");
         foreach (var l in studySessionDtos)
         {
-            _ = readTable.AddRow(new Text(l.Id.ToString()), new Text(l.CorrectAnswer.ToString()), new Text(l.TotalQuestions.ToString()), new Text(l.Date.ToString()));
+            _ = readTable.AddRow(new Text(l.Id.ToString()), new Text(l.CorrectAnswer.ToString()), new Text(l.TotalQuestions.ToString()), new Text(l.Score.ToString()), new Text(l.Date.ToString()));
         }
 
         AnsiConsole.Write(readTable);
