@@ -5,8 +5,10 @@ using Spectre.Console;
 using Flashcards.Esaiy.Enums;
 using Flashcards.Esaiy.Helpers;
 using Flashcards.Esaiy.Services;
+using System.Configuration;
 
-var connectionString = "Server=localhost;Database=flashcard;User Id=sa;Password=P@ssword123;TrustServerCertificate=True";
+System.Collections.Specialized.NameValueCollection sAll = ConfigurationManager.AppSettings;
+string? connectionString = sAll.Get("ConnectionString") ?? throw new Exception("database connection string cannot be empty");
 
 var SQLServerObject = new SqlServer(connectionString);
 SQLServerObject.MigrateUp();
