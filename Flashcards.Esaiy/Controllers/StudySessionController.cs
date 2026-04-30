@@ -3,15 +3,16 @@ using Flashcards.Esaiy.Enums;
 using Flashcards.Esaiy.Helpers;
 using Flashcards.Esaiy.Models;
 using Flashcards.Esaiy.Repositories;
+using Flashcards.Esaiy.Services;
 using Spectre.Console;
 
 namespace Flashcards.Esaiy.Controllers;
 
-public class StudySessionController(StudySessionRepository studySessionRepo, FlashcardRepository flashcardRepo, StackRepository stackRepo)
+public class StudySessionController(StudySessionRepository studySessionRepository, FlashcardRepository flashcardRepository, StackService stackService)
 {
     public void Study()
     {
-        var selectedStack = SelectStack();
+        var selectedStack = stackService.SelectStack();
         if (selectedStack is null)
         {
             AnsiConsole.MarkupLine("There is no stack");
@@ -34,7 +35,7 @@ public class StudySessionController(StudySessionRepository studySessionRepo, Fla
             switch (choice)
             {
                 case StudyMenu.Select_Stack:
-                    selectedStack = SelectStack()!;
+                    selectedStack = stackService.SelectStack()!;
                     continue;
                 case StudyMenu.Start:
                     Start(selectedStack);
@@ -50,31 +51,9 @@ public class StudySessionController(StudySessionRepository studySessionRepo, Fla
         }
     }
 
-    public Stack? SelectStack()
-    {
-        var stacks = stackRepo.GetAll();
-
-        if (stacks.Count == 0)
-        {
-            AnsiConsole.MarkupLine("There is no stack.");
-            return null;
-        }
-
-        var selectedStack = AnsiConsole.Prompt(
-            new SelectionPrompt<Stack>()
-            .Title("Select Stack")
-            .PageSize(10)
-            .MoreChoicesText("Move Up Or Down to Choose")
-            .UseConverter(s => $"{s.Id} {s.Name}")
-            .AddChoices(stacks)
-            );
-
-        return selectedStack;
-    }
-
     public void Start(Stack stack)
     {
-        var flashcards = flashcardRepo.GetAll(stack.Id);
+        var flashcards = flashcardRepository.GetAll(stack.Id);
         if (flashcards.Count == 0)
         {
             AnsiConsole.MarkupLine("There is no flashcard in this stack.");
@@ -116,7 +95,7 @@ public class StudySessionController(StudySessionRepository studySessionRepo, Fla
         AnsiConsole.Write(new FigletText("Flashcard"));
 
         var obj = new StudySession(correctAnswer, flashcards.Count, startTime, stack.Id);
-        studySessionRepo.Save(obj);
+        studySessionRepository.Save(obj);
 
         var score = (double)correctAnswer / flashcards.Count * 100;
         AnsiConsole.MarkupLine($"finished a session with a score: {score} ({correctAnswer}/{flashcards.Count})");
@@ -124,7 +103,7 @@ public class StudySessionController(StudySessionRepository studySessionRepo, Fla
 
     public void GetAll(Stack stack)
     {
-        var studySessions = studySessionRepo.GetAll(stack.Id);
+        var studySessions = studySessionRepository.GetAll(stack.Id);
 
         if (studySessions.Count == 0)
         {

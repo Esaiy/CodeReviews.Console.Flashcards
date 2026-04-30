@@ -3,15 +3,16 @@ using Flashcards.Esaiy.Enums;
 using Flashcards.Esaiy.Helpers;
 using Flashcards.Esaiy.Models;
 using Flashcards.Esaiy.Repositories;
+using Flashcards.Esaiy.Services;
 using Spectre.Console;
 
 namespace Flashcards.Esaiy.Controllers;
 
-public class FlashcardController(FlashcardRepository flashcardRepo, StackRepository stackRepo)
+public class FlashcardController(FlashcardRepository flashcardRepository, StackService stackService)
 {
     public void ManageFlashcard()
     {
-        var selectedStack = SelectStack();
+        var selectedStack = stackService.SelectStack();
         if (selectedStack is null)
         {
             AnsiConsole.MarkupLine("there is no stack");
@@ -36,7 +37,7 @@ public class FlashcardController(FlashcardRepository flashcardRepo, StackReposit
             switch (choice)
             {
                 case FlashcardMenu.Select_Stack:
-                    selectedStack = SelectStack()!;
+                    selectedStack = stackService.SelectStack()!;
                     continue;
                 case FlashcardMenu.Create:
                     Create(selectedStack);
@@ -58,29 +59,6 @@ public class FlashcardController(FlashcardRepository flashcardRepo, StackReposit
         }
     }
 
-    // TODO: maybe refactor this into stack related class
-    public Stack? SelectStack()
-    {
-        var stacks = stackRepo.GetAll();
-
-        if (stacks.Count == 0)
-        {
-            AnsiConsole.MarkupLine("There is no stack.");
-            return null;
-        }
-
-        var selectedStack = AnsiConsole.Prompt(
-            new SelectionPrompt<Stack>()
-            .Title("Select Stack")
-            .PageSize(10)
-            .MoreChoicesText("Move Up Or Down to Choose")
-            .UseConverter(s => $"{s.Id} {s.Name}")
-            .AddChoices(stacks)
-            );
-
-        return selectedStack;
-    }
-
     public void Create(Stack stack)
     {
         var front = AnsiConsole.Ask<string>("Enter the front side of the flashcard");
@@ -88,14 +66,14 @@ public class FlashcardController(FlashcardRepository flashcardRepo, StackReposit
 
         var flashcardObj = new Flashcard(front, back, stack.Id);
 
-        flashcardRepo.Create(flashcardObj);
+        flashcardRepository.Create(flashcardObj);
 
         AnsiConsole.MarkupLine($"New flashcard has been added to stack \"{stack.Name}\".");
     }
 
     public void GetAll(Stack stack)
     {
-        var flashcards = flashcardRepo.GetAll(stack.Id);
+        var flashcards = flashcardRepository.GetAll(stack.Id);
 
         if (flashcards.Count == 0)
         {
@@ -119,7 +97,7 @@ public class FlashcardController(FlashcardRepository flashcardRepo, StackReposit
 
     public void Update(Stack stack)
     {
-        var flashcards = flashcardRepo.GetAll(stack.Id);
+        var flashcards = flashcardRepository.GetAll(stack.Id);
 
         if (flashcards.Count == 0)
         {
@@ -138,19 +116,22 @@ public class FlashcardController(FlashcardRepository flashcardRepo, StackReposit
             .AddChoices(flashcardDtos)
             );
 
+        AnsiConsole.MarkupLine($"The old front side is: \"{updateId.Front}\"");
         var newFront = AnsiConsole.Ask<string>("Enter new front side");
+
+        AnsiConsole.MarkupLine($"The old back side is: \"{updateId.Back}\"");
         var newBack = AnsiConsole.Ask<string>("Enter new back side");
 
         var newFlashcard = new Flashcard(updateId.RealId, newFront, newBack, stack.Id);
 
-        flashcardRepo.Update(newFlashcard);
+        flashcardRepository.Update(newFlashcard);
 
         AnsiConsole.MarkupLine("Flashcard has been updated.");
     }
 
     public void Delete(Stack stack)
     {
-        var flashcards = flashcardRepo.GetAll(stack.Id);
+        var flashcards = flashcardRepository.GetAll(stack.Id);
 
         if (flashcards.Count == 0)
         {
@@ -169,7 +150,7 @@ public class FlashcardController(FlashcardRepository flashcardRepo, StackReposit
             .AddChoices(flashcardDtos)
             );
 
-        flashcardRepo.Delete(deletedFlashcard.RealId);
+        flashcardRepository.Delete(deletedFlashcard.RealId);
 
         AnsiConsole.MarkupLine("Flashcard has been deleted");
     }

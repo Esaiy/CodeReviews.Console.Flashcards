@@ -1,14 +1,14 @@
 using Flashcards.Esaiy.Repositories;
-using Flashcards.Esaiy.Models;
 using Spectre.Console;
+using Flashcards.Esaiy.Services;
 
 namespace Flashcards.Esaiy.Controllers;
 
-public class ReportController(ReportRepository reportRepository, StackRepository stackRepository)
+public class ReportController(ReportRepository reportRepository, StackService stackService)
 {
     public void GetReport()
     {
-        var selectedStack = SelectStack();
+        var selectedStack = stackService.SelectStack();
         if (selectedStack is null)
         {
             AnsiConsole.MarkupLine("There is no stack.");
@@ -74,27 +74,5 @@ public class ReportController(ReportRepository reportRepository, StackRepository
 
         AnsiConsole.MarkupLine("Press Any Key to Continue.");
         _ = Console.ReadKey();
-    }
-
-    public Stack? SelectStack()
-    {
-        var stacks = stackRepository.GetAll();
-
-        if (stacks.Count == 0)
-        {
-            AnsiConsole.MarkupLine("There is no stack.");
-            return null;
-        }
-
-        var selectedStack = AnsiConsole.Prompt(
-            new SelectionPrompt<Stack>()
-            .Title("Select Stack")
-            .PageSize(10)
-            .MoreChoicesText("Move Up Or Down to Choose")
-            .UseConverter(s => $"{s.Id} {s.Name}")
-            .AddChoices(stacks)
-            );
-
-        return selectedStack;
     }
 }

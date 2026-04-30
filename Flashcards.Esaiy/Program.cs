@@ -5,6 +5,7 @@ using Flashcards.Esaiy.Repositories;
 using Spectre.Console;
 using Flashcards.Esaiy.Enums;
 using Flashcards.Esaiy.Helpers;
+using Flashcards.Esaiy.Services;
 
 var connectionString = "Server=localhost;Database=flashcard;User Id=sa;Password=P@ssword123;TrustServerCertificate=True";
 
@@ -12,16 +13,17 @@ var SQLServerObject = new SqlServer(connectionString);
 SQLServerObject.MigrateUp();
 
 var stackRepository = new StackRepository(SQLServerObject);
+var stackService = new StackService(stackRepository);
 var stackController = new StackController(stackRepository);
 
 var flashcardRepository = new FlashcardRepository(SQLServerObject);
-var flashcardController = new FlashcardController(flashcardRepository, stackRepository);
+var flashcardController = new FlashcardController(flashcardRepository, stackService);
 
 var studySessionRepository = new StudySessionRepository(SQLServerObject);
-var studySessionController = new StudySessionController(studySessionRepository, flashcardRepository, stackRepository);
+var studySessionController = new StudySessionController(studySessionRepository, flashcardRepository, stackService);
 
 var reportRepository = new ReportRepository(SQLServerObject);
-var reportController = new ReportController(reportRepository, stackRepository);
+var reportController = new ReportController(reportRepository, stackService);
 
 while (true)
 {

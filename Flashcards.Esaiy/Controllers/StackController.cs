@@ -7,7 +7,7 @@ using Spectre.Console;
 
 namespace Flashcards.Esaiy.Controllers;
 
-public class StackController(StackRepository stackRepo)
+public class StackController(StackRepository stackRepository)
 {
     public void ManageStack()
     {
@@ -53,7 +53,7 @@ public class StackController(StackRepository stackRepo)
 
         try
         {
-            stackRepo.Create(stackObj);
+            stackRepository.Create(stackObj);
         }
         catch (SqlException ex)
         {
@@ -79,7 +79,7 @@ public class StackController(StackRepository stackRepo)
 
     public void GetAll()
     {
-        var stacks = stackRepo.GetAll();
+        var stacks = stackRepository.GetAll();
 
         if (stacks.Count == 0)
         {
@@ -99,7 +99,7 @@ public class StackController(StackRepository stackRepo)
 
     public void Update()
     {
-        var stacks = stackRepo.GetAll();
+        var stacks = stackRepository.GetAll();
 
         if (stacks.Count == 0)
         {
@@ -120,14 +120,14 @@ public class StackController(StackRepository stackRepo)
         AnsiConsole.MarkupLine($"The old stack name is: \"{updateId.Name}\"");
         var stackName = AnsiConsole.Ask<string>("Enter the new stack name: ");
         updateId.Name = stackName;
-        stackRepo.Update(updateId);
+        stackRepository.Update(updateId);
 
         AnsiConsole.MarkupLine("Stack successfully updated.");
     }
 
     public void Delete()
     {
-        var stacks = stackRepo.GetAll();
+        var stacks = stackRepository.GetAll();
 
         if (stacks.Count == 0)
         {
@@ -158,7 +158,7 @@ public class StackController(StackRepository stackRepo)
             return;
         }
 
-        stackRepo.Delete(deletedStack.Id);
+        stackRepository.Delete(deletedStack.Id);
         AnsiConsole.MarkupLine("Stack has been deleted.");
     }
 }
