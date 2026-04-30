@@ -16,14 +16,23 @@ public class StackService(StackRepository stackRepository)
             return null;
         }
 
-        var selectedStack = AnsiConsole.Prompt(
-            new SelectionPrompt<Stack>()
-            .Title("Select Stack")
-            .PageSize(10)
-            .MoreChoicesText("Move Up Or Down to Choose")
-            .UseConverter(s => $"{s.Id} {s.Name}")
-            .AddChoices(stacks)
-            );
+        Table table = new();
+        table.AddColumn("Name");
+        foreach (var s in stacks)
+        {
+            _ = table.AddRow(new Text(s.Name));
+        }
+        AnsiConsole.Write(table);
+
+        var prompt = new TextPrompt<string>("Select the stack: ");
+        foreach (var stack in stacks)
+        {
+            prompt.AddChoice(stack.Name);
+        }
+        prompt.HideChoices();
+
+        var result = AnsiConsole.Prompt(prompt);
+        var selectedStack = stacks.Find(x => x.Name == result);
 
         return selectedStack;
     }

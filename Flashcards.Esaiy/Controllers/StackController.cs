@@ -21,7 +21,7 @@ public class StackController(StackRepository stackRepository)
                     .Title("Choose Stack Menu")
                     .PageSize(10)
                     .MoreChoicesText("Move Up Or Down to Choose")
-                    .UseConverter((option) => Helper.FormatEnum(option))
+                    .UseConverter((option) => Formatter.FormatEnum(option))
                     .AddChoices(Enum.GetValues<StackMenu>())
                     );
             switch (choice)
@@ -87,14 +87,14 @@ public class StackController(StackRepository stackRepository)
             return;
         }
 
-        Table readTable = new();
-        readTable.AddColumn("Name");
+        Table table = new();
+        table.AddColumn("Name");
         foreach (var s in stacks)
         {
-            _ = readTable.AddRow(new Text(s.Name));
+            _ = table.AddRow(new Text(s.Name));
         }
 
-        AnsiConsole.Write(readTable);
+        AnsiConsole.Write(table);
     }
 
     public void Update()

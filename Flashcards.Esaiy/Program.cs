@@ -35,7 +35,7 @@ while (true)
             .Title("Choose Menu")
             .PageSize(10)
             .MoreChoicesText("Move Up Or Down to Choose")
-            .UseConverter((option) => Helper.FormatEnum(option))
+            .UseConverter((option) => Formatter.FormatEnum(option))
             .AddChoices(Enum.GetValues<Main>())
             );
 

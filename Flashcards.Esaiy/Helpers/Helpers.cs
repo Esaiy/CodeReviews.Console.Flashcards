@@ -1,6 +1,6 @@
 namespace Flashcards.Esaiy.Helpers;
 
-public class Helper
+public class Formatter
 {
 
     public static string FormatEnum(Enum e)

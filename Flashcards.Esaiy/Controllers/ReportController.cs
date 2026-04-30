@@ -12,6 +12,8 @@ public class ReportController(ReportRepository reportRepository, StackService st
         if (selectedStack is null)
         {
             AnsiConsole.MarkupLine("There is no stack.");
+            AnsiConsole.MarkupLine("Press Any Key to Continue.");
+            _ = Console.ReadKey();
             return;
         }
 
@@ -20,6 +22,8 @@ public class ReportController(ReportRepository reportRepository, StackService st
         if (years.Count == 0)
         {
             AnsiConsole.MarkupLine("There is no recorded study session.");
+            AnsiConsole.MarkupLine("Press Any Key to Continue.");
+            _ = Console.ReadKey();
             return;
         }
 
@@ -36,11 +40,13 @@ public class ReportController(ReportRepository reportRepository, StackService st
         if (report is null)
         {
             AnsiConsole.MarkupLine("There is no report for this year");
+            AnsiConsole.MarkupLine("Press Any Key to Continue.");
+            _ = Console.ReadKey();
             return;
         }
 
-        Table readTable = new();
-        readTable.AddColumn("Stack Name")
+        Table table = new();
+        table.AddColumn("Stack Name")
             .AddColumn("January")
             .AddColumn("February")
             .AddColumn("March")
@@ -54,7 +60,7 @@ public class ReportController(ReportRepository reportRepository, StackService st
             .AddColumn("November")
             .AddColumn("December");
 
-        readTable.AddRow(
+        table.AddRow(
             new Text(report.StackName),
             new Text(report.January.ToString()),
             new Text(report.February.ToString()),
@@ -70,7 +76,7 @@ public class ReportController(ReportRepository reportRepository, StackService st
             new Text(report.December.ToString())
            );
 
-        AnsiConsole.Write(readTable);
+        AnsiConsole.Write(table);
 
         AnsiConsole.MarkupLine("Press Any Key to Continue.");
         _ = Console.ReadKey();

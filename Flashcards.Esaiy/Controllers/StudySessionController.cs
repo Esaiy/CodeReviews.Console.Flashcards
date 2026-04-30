@@ -29,7 +29,7 @@ public class StudySessionController(StudySessionRepository studySessionRepositor
                     .Title("Choose Study Menu")
                     .PageSize(10)
                     .MoreChoicesText("Move Up Or Down to Choose")
-                    .UseConverter((option) => Helper.FormatEnum(option))
+                    .UseConverter((option) => Formatter.FormatEnum(option))
                     .AddChoices(Enum.GetValues<StudyMenu>())
                     );
             switch (choice)
@@ -71,10 +71,10 @@ public class StudySessionController(StudySessionRepository studySessionRepositor
             FigletText title = new("Flashcard");
             AnsiConsole.Write(title);
 
-            Table readTable = new();
-            readTable.AddColumn("Front");
-            _ = readTable.AddRow(new Text(f.Front));
-            AnsiConsole.Write(readTable);
+            Table table = new();
+            table.AddColumn("Front");
+            _ = table.AddRow(new Text(f.Front));
+            AnsiConsole.Write(table);
 
             var back = AnsiConsole.Ask<string>("What is the answer for this card?");
             if (f.Back.Equals(back, StringComparison.OrdinalIgnoreCase))
@@ -113,18 +113,18 @@ public class StudySessionController(StudySessionRepository studySessionRepositor
 
         var studySessionDtos = StudySessionDto.ModelToDTO(studySessions);
 
-        Table readTable = new();
-        readTable.AddColumn("Id")
+        Table table = new();
+        table.AddColumn("Id")
             .AddColumn("Correct Answer")
             .AddColumn("Total Questions")
             .AddColumn("Score")
             .AddColumn("Date");
         foreach (var l in studySessionDtos)
         {
-            _ = readTable.AddRow(new Text(l.Id.ToString()), new Text(l.CorrectAnswer.ToString()), new Text(l.TotalQuestions.ToString()), new Text(l.Score.ToString()), new Text(l.Date.ToString()));
+            _ = table.AddRow(new Text(l.Id.ToString()), new Text(l.CorrectAnswer.ToString()), new Text(l.TotalQuestions.ToString()), new Text(l.Score.ToString()), new Text(l.Date.ToString()));
         }
 
-        AnsiConsole.Write(readTable);
+        AnsiConsole.Write(table);
     }
 
     public static void FisherYatesShuffle<T>(IList<T> list)

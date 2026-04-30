@@ -30,7 +30,7 @@ public class FlashcardController(FlashcardRepository flashcardRepository, StackS
                     .Title("Choose Flashcard Menu")
                     .PageSize(10)
                     .MoreChoicesText("Move Up Or Down to Choose")
-                    .UseConverter((option) => Helper.FormatEnum(option))
+                    .UseConverter((option) => Formatter.FormatEnum(option))
                     .AddChoices(Enum.GetValues<FlashcardMenu>())
                     );
 
@@ -61,8 +61,8 @@ public class FlashcardController(FlashcardRepository flashcardRepository, StackS
 
     public void Create(Stack stack)
     {
-        var front = AnsiConsole.Ask<string>("Enter the front side of the flashcard");
-        var back = AnsiConsole.Ask<string>("Enter the back side of the flashcard");
+        var front = AnsiConsole.Ask<string>("Enter the front side of the flashcard: ");
+        var back = AnsiConsole.Ask<string>("Enter the back side of the flashcard: ");
 
         var flashcardObj = new Flashcard(front, back, stack.Id);
 
@@ -83,16 +83,16 @@ public class FlashcardController(FlashcardRepository flashcardRepository, StackS
 
         var flashcardDtos = FlashcardDto.ModelToDto(flashcards);
 
-        Table readTable = new();
-        readTable.AddColumn("Id")
+        Table table = new();
+        table.AddColumn("Id")
             .AddColumn("Front")
             .AddColumn("Back");
         foreach (var f in flashcardDtos)
         {
-            _ = readTable.AddRow(new Text(f.Id.ToString()), new Text(f.Front), new Text(f.Back));
+            _ = table.AddRow(new Text(f.Id.ToString()), new Text(f.Front), new Text(f.Back));
         }
 
-        AnsiConsole.Write(readTable);
+        AnsiConsole.Write(table);
     }
 
     public void Update(Stack stack)
@@ -107,22 +107,34 @@ public class FlashcardController(FlashcardRepository flashcardRepository, StackS
 
         var flashcardDtos = FlashcardDto.ModelToDto(flashcards);
 
-        var updateId = AnsiConsole.Prompt(
-            new SelectionPrompt<FlashcardDto>()
-            .Title("Select Flashcard")
-            .PageSize(10)
-            .MoreChoicesText("Move Up Or Down to Choose")
-            .UseConverter(s => $"{s.Id} {s.Front} {s.Back}")
-            .AddChoices(flashcardDtos)
-            );
+        Table table = new();
+        table.AddColumn("Id")
+            .AddColumn("Front")
+            .AddColumn("Back");
 
-        AnsiConsole.MarkupLine($"The old front side is: \"{updateId.Front}\"");
-        var newFront = AnsiConsole.Ask<string>("Enter new front side");
+        foreach (var f in flashcardDtos)
+        {
+            _ = table.AddRow(new Text(f.Id.ToString()), new Text(f.Front), new Text(f.Back));
+        }
+        AnsiConsole.Write(table);
 
-        AnsiConsole.MarkupLine($"The old back side is: \"{updateId.Back}\"");
-        var newBack = AnsiConsole.Ask<string>("Enter new back side");
+        var prompt = new TextPrompt<string>("Select the id of the flashcard: ");
+        foreach (var f in flashcardDtos)
+        {
+            prompt.AddChoice(f.Id.ToString());
+        }
+        prompt.HideChoices();
 
-        var newFlashcard = new Flashcard(updateId.RealId, newFront, newBack, stack.Id);
+        var result = AnsiConsole.Prompt(prompt);
+        var selectedFlashcardDto = flashcardDtos.Find(x => x.Id == int.Parse(result));
+
+        AnsiConsole.MarkupLine($"The old front side is: \"{selectedFlashcardDto!.Front}\"");
+        var newFront = AnsiConsole.Ask<string>("Enter new front side: ");
+
+        AnsiConsole.MarkupLine($"The old back side is: \"{selectedFlashcardDto!.Back}\"");
+        var newBack = AnsiConsole.Ask<string>("Enter new back side: ");
+
+        var newFlashcard = new Flashcard(selectedFlashcardDto.RealId, newFront, newBack, stack.Id);
 
         flashcardRepository.Update(newFlashcard);
 
@@ -141,16 +153,28 @@ public class FlashcardController(FlashcardRepository flashcardRepository, StackS
 
         var flashcardDtos = FlashcardDto.ModelToDto(flashcards);
 
-        var deletedFlashcard = AnsiConsole.Prompt(
-            new SelectionPrompt<FlashcardDto>()
-            .Title("Select Flashcard")
-            .PageSize(10)
-            .MoreChoicesText("Move Up Or Down to Choose")
-            .UseConverter(s => $"{s.Id} {s.Front} {s.Back}")
-            .AddChoices(flashcardDtos)
-            );
+        Table table = new();
+        table.AddColumn("Id")
+            .AddColumn("Front")
+            .AddColumn("Back");
 
-        flashcardRepository.Delete(deletedFlashcard.RealId);
+        foreach (var f in flashcardDtos)
+        {
+            _ = table.AddRow(new Text(f.Id.ToString()), new Text(f.Front), new Text(f.Back));
+        }
+        AnsiConsole.Write(table);
+
+        var prompt = new TextPrompt<string>("Select the id of the flashcard: ");
+        foreach (var f in flashcardDtos)
+        {
+            prompt.AddChoice(f.Id.ToString());
+        }
+        prompt.HideChoices();
+
+        var result = AnsiConsole.Prompt(prompt);
+        var selectedFlashcardDto = flashcardDtos.Find(x => x.Id == int.Parse(result));
+
+        flashcardRepository.Delete(selectedFlashcardDto!.RealId);
 
         AnsiConsole.MarkupLine("Flashcard has been deleted");
     }
