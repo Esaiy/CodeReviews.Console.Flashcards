@@ -58,7 +58,6 @@ public class StackController(StackRepository stackRepository)
         catch (SqlException ex)
         {
             // the way you handle the sqlclient exception is by the ex.Number
-            // maybe refactor this to another function
 
             // exception number for unique constraint violation
             if (ex.Number == 2627)
