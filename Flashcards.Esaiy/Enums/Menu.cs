@@ -13,7 +13,6 @@ enum StackMenu
 {
     Create,
     Get_All,
-    Pick,
     Update,
     Delete,
     Back
