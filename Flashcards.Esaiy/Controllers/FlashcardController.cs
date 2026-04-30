@@ -1,5 +1,6 @@
 using Flashcards.Esaiy.Dtos;
 using Flashcards.Esaiy.Enums;
+using Flashcards.Esaiy.Helpers;
 using Flashcards.Esaiy.Models;
 using Flashcards.Esaiy.Repositories;
 using Spectre.Console;
@@ -28,18 +29,19 @@ public class FlashcardController(FlashcardRepository flashcardRepo, StackReposit
                     .Title("Choose Flashcard Menu")
                     .PageSize(10)
                     .MoreChoicesText("Move Up Or Down to Choose")
+                    .UseConverter((option) => Helper.FormatEnum(option))
                     .AddChoices(Enum.GetValues<FlashcardMenu>())
                     );
 
             switch (choice)
             {
-                case FlashcardMenu.SelectStack:
+                case FlashcardMenu.Select_Stack:
                     selectedStack = SelectStack()!;
                     continue;
                 case FlashcardMenu.Create:
                     Create(selectedStack);
                     break;
-                case FlashcardMenu.GetAll:
+                case FlashcardMenu.Get_All:
                     GetAll(selectedStack);
                     break;
                 case FlashcardMenu.Update:

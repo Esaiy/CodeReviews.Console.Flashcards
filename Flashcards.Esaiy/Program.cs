@@ -4,8 +4,7 @@ using Flashcards.Esaiy.Databases;
 using Flashcards.Esaiy.Repositories;
 using Spectre.Console;
 using Flashcards.Esaiy.Enums;
-
-Console.WriteLine("Hello, World!");
+using Flashcards.Esaiy.Helpers;
 
 var connectionString = "Server=localhost;Database=flashcard;User Id=sa;Password=P@ssword123;TrustServerCertificate=True";
 
@@ -34,6 +33,7 @@ while (true)
             .Title("Choose Menu")
             .PageSize(10)
             .MoreChoicesText("Move Up Or Down to Choose")
+            .UseConverter((option) => Helper.FormatEnum(option))
             .AddChoices(Enum.GetValues<Main>())
             );
 
@@ -41,16 +41,16 @@ while (true)
 
     switch (choice)
     {
-        case Main.ManageStack:
+        case Main.Manage_Stack:
             stackController.ManageStack();
             break;
-        case Main.ManageFlashcard:
+        case Main.Manage_Flashcard:
             flashcardController.ManageFlashcard();
             break;
         case Main.Study:
             studySessionController.Study();
             break;
-        case Main.ViewReport:
+        case Main.View_Report:
             reportController.GetReport();
             break;
         case Main.Exit:

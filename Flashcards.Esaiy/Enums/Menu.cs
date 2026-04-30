@@ -2,17 +2,17 @@ namespace Flashcards.Esaiy.Enums;
 
 enum Main
 {
-    ManageStack,
-    ManageFlashcard,
+    Manage_Stack,
+    Manage_Flashcard,
     Study,
-    ViewReport,
+    View_Report,
     Exit
 };
 
 enum StackMenu
 {
     Create,
-    GetAll,
+    Get_All,
     Pick,
     Update,
     Delete,
@@ -21,9 +21,9 @@ enum StackMenu
 
 enum FlashcardMenu
 {
-    SelectStack,
+    Select_Stack,
     Create,
-    GetAll,
+    Get_All,
     Update,
     Delete,
     Back
@@ -31,8 +31,8 @@ enum FlashcardMenu
 
 enum StudyMenu
 {
-    SelectStack,
+    Select_Stack,
     Start,
-    GetAll,
+    Get_All,
     Back
 };

@@ -1,5 +1,6 @@
 using Flashcards.Esaiy.Dtos;
 using Flashcards.Esaiy.Enums;
+using Flashcards.Esaiy.Helpers;
 using Flashcards.Esaiy.Models;
 using Flashcards.Esaiy.Repositories;
 using Spectre.Console;
@@ -27,17 +28,18 @@ public class StudySessionController(StudySessionRepository studySessionRepo, Fla
                     .Title("Choose Study Menu")
                     .PageSize(10)
                     .MoreChoicesText("Move Up Or Down to Choose")
+                    .UseConverter((option) => Helper.FormatEnum(option))
                     .AddChoices(Enum.GetValues<StudyMenu>())
                     );
             switch (choice)
             {
-                case StudyMenu.SelectStack:
+                case StudyMenu.Select_Stack:
                     selectedStack = SelectStack()!;
                     continue;
                 case StudyMenu.Start:
                     Start(selectedStack);
                     break;
-                case StudyMenu.GetAll:
+                case StudyMenu.Get_All:
                     GetAll(selectedStack);
                     break;
                 case StudyMenu.Back:

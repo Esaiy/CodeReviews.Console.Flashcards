@@ -1,4 +1,5 @@
 using Flashcards.Esaiy.Enums;
+using Flashcards.Esaiy.Helpers;
 using Flashcards.Esaiy.Models;
 using Flashcards.Esaiy.Repositories;
 using Microsoft.Data.SqlClient;
@@ -20,6 +21,7 @@ public class StackController(StackRepository stackRepo)
                     .Title("Choose Stack Menu")
                     .PageSize(10)
                     .MoreChoicesText("Move Up Or Down to Choose")
+                    .UseConverter((option) => Helper.FormatEnum(option))
                     .AddChoices(Enum.GetValues<StackMenu>())
                     );
             switch (choice)
@@ -27,7 +29,7 @@ public class StackController(StackRepository stackRepo)
                 case StackMenu.Create:
                     Create();
                     break;
-                case StackMenu.GetAll:
+                case StackMenu.Get_All:
                     GetAll();
                     break;
                 case StackMenu.Pick:
