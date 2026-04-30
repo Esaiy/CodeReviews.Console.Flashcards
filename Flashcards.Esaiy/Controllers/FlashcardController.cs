@@ -53,7 +53,7 @@ public class FlashcardController(FlashcardRepository flashcardRepo, StackReposit
                 case FlashcardMenu.Back:
                     return;
             }
-            AnsiConsole.MarkupLine("Press Any Key to Continue");
+            AnsiConsole.MarkupLine("Press Any Key to Continue.");
             _ = Console.ReadKey();
         }
     }
@@ -65,6 +65,7 @@ public class FlashcardController(FlashcardRepository flashcardRepo, StackReposit
 
         if (stacks.Count == 0)
         {
+            AnsiConsole.MarkupLine("There is no stack.");
             return null;
         }
 

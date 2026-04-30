@@ -39,13 +39,13 @@ public class StudySessionController(StudySessionRepository studySessionRepo, Fla
                 case StudyMenu.Start:
                     Start(selectedStack);
                     break;
-                case StudyMenu.Get_All:
+                case StudyMenu.Get_All_Sessions:
                     GetAll(selectedStack);
                     break;
                 case StudyMenu.Back:
                     return;
             }
-            AnsiConsole.MarkupLine("Press Any Key to Continue");
+            AnsiConsole.MarkupLine("Press Any Key to Continue.");
             _ = Console.ReadKey();
         }
     }
@@ -56,6 +56,7 @@ public class StudySessionController(StudySessionRepository studySessionRepo, Fla
 
         if (stacks.Count == 0)
         {
+            AnsiConsole.MarkupLine("There is no stack.");
             return null;
         }
 
@@ -76,7 +77,7 @@ public class StudySessionController(StudySessionRepository studySessionRepo, Fla
         var flashcards = flashcardRepo.GetAll(stack.Id);
         if (flashcards.Count == 0)
         {
-            AnsiConsole.MarkupLine("");
+            AnsiConsole.MarkupLine("There is no flashcard in this stack.");
             return;
         }
 
@@ -96,20 +97,23 @@ public class StudySessionController(StudySessionRepository studySessionRepo, Fla
             _ = readTable.AddRow(new Text(f.Front));
             AnsiConsole.Write(readTable);
 
-            var back = AnsiConsole.Ask<string>("whats on the back side?");
+            var back = AnsiConsole.Ask<string>("What is the answer for this card?");
             if (f.Back.Equals(back, StringComparison.OrdinalIgnoreCase))
             {
                 correctAnswer++;
-                AnsiConsole.MarkupLine($"thats right, \"{back}\" is the correct answer");
+                AnsiConsole.MarkupLine($"Thats right, \"{back}\" is the correct answer.");
             }
             else
             {
-                AnsiConsole.MarkupLine($"no its wrong, the right answer is \"{f.Back}\"");
+                AnsiConsole.MarkupLine($"It's wrong, the right answer is \"{f.Back}\"");
             }
 
-            AnsiConsole.MarkupLine("Press Any Key to Continue");
+            AnsiConsole.MarkupLine("Press Any Key to Continue.");
             _ = Console.ReadKey();
         }
+
+        AnsiConsole.Clear();
+        AnsiConsole.Write(new FigletText("Flashcard"));
 
         var obj = new StudySession(correctAnswer, flashcards.Count, startTime, stack.Id);
         studySessionRepo.Save(obj);

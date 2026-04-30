@@ -11,7 +11,7 @@ public class ReportController(ReportRepository reportRepository, StackRepository
         var selectedStack = SelectStack();
         if (selectedStack is null)
         {
-            // no stack
+            AnsiConsole.MarkupLine("There is no stack.");
             return;
         }
 
@@ -19,7 +19,7 @@ public class ReportController(ReportRepository reportRepository, StackRepository
 
         if (years.Count == 0)
         {
-            // no study session to report
+            AnsiConsole.MarkupLine("There is no recorded study session.");
             return;
         }
 
@@ -35,7 +35,7 @@ public class ReportController(ReportRepository reportRepository, StackRepository
 
         if (report is null)
         {
-            // empty
+            AnsiConsole.MarkupLine("There is no report for this year");
             return;
         }
 
@@ -72,7 +72,7 @@ public class ReportController(ReportRepository reportRepository, StackRepository
 
         AnsiConsole.Write(readTable);
 
-        AnsiConsole.MarkupLine("Press Any Key to Continue");
+        AnsiConsole.MarkupLine("Press Any Key to Continue.");
         _ = Console.ReadKey();
     }
 
@@ -82,6 +82,7 @@ public class ReportController(ReportRepository reportRepository, StackRepository
 
         if (stacks.Count == 0)
         {
+            AnsiConsole.MarkupLine("There is no stack.");
             return null;
         }
 

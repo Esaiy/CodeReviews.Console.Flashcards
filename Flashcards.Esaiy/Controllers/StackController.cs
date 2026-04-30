@@ -32,8 +32,6 @@ public class StackController(StackRepository stackRepo)
                 case StackMenu.Get_All:
                     GetAll();
                     break;
-                case StackMenu.Pick:
-                    break;
                 case StackMenu.Update:
                     Update();
                     break;
@@ -43,14 +41,14 @@ public class StackController(StackRepository stackRepo)
                 case StackMenu.Back:
                     return;
             }
-            AnsiConsole.MarkupLine("Press Any Key to Continue");
+            AnsiConsole.MarkupLine("Press Any Key to Continue.");
             _ = Console.ReadKey();
         }
     }
 
     public void Create()
     {
-        var stackName = AnsiConsole.Ask<string>("enter stack name");
+        var stackName = AnsiConsole.Ask<string>("Enter new stack name (must be unique): ");
         var stackObj = new Stack(stackName);
 
         try
@@ -111,7 +109,7 @@ public class StackController(StackRepository stackRepo)
 
         var updateId = AnsiConsole.Prompt(
             new SelectionPrompt<Stack>()
-            .Title("Select Coding Session")
+            .Title("Select Stack")
             .PageSize(10)
             .MoreChoicesText("Move Up Or Down to Choose")
             .UseConverter(s => $"{s.Name}")
@@ -119,11 +117,12 @@ public class StackController(StackRepository stackRepo)
             );
 
 
-        var stackName = AnsiConsole.Ask<string>("enter new stack name");
+        AnsiConsole.MarkupLine($"The old stack name is: \"{updateId.Name}\"");
+        var stackName = AnsiConsole.Ask<string>("Enter the new stack name: ");
         updateId.Name = stackName;
         stackRepo.Update(updateId);
 
-        AnsiConsole.MarkupLine("its updated");
+        AnsiConsole.MarkupLine("Stack successfully updated.");
     }
 
     public void Delete()
@@ -138,7 +137,7 @@ public class StackController(StackRepository stackRepo)
 
         var deletedStack = AnsiConsole.Prompt(
             new SelectionPrompt<Stack>()
-            .Title("Select Coding Session")
+            .Title("Select Stack")
             .PageSize(10)
             .MoreChoicesText("Move Up Or Down to Choose")
             .UseConverter(s => $"{s.Name}")
@@ -155,11 +154,11 @@ public class StackController(StackRepository stackRepo)
 
         if (!confirmation)
         {
-            AnsiConsole.MarkupLine("cancel deletion");
+            AnsiConsole.MarkupLine("Canceled");
             return;
         }
 
         stackRepo.Delete(deletedStack.Id);
-        AnsiConsole.MarkupLine("its deleted");
+        AnsiConsole.MarkupLine("Stack has been deleted.");
     }
 }

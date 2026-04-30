@@ -33,6 +33,6 @@ enum StudyMenu
 {
     Select_Stack,
     Start,
-    Get_All,
+    Get_All_Sessions,
     Back
 };

@@ -7,14 +7,12 @@ public class Stack
 
     public Stack(int id, string name)
     {
-        // TODO: handle empty string for name
         Id = id;
         Name = name;
     }
 
     public Stack(string name)
     {
-        // TODO: handle empty string for name
         Name = name;
     }
 }
